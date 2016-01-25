@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="GAS_modelStoreContainer" CdmEntityContainer="GAS_context">
+    <EntitySetMapping Name="Cards">
+      <EntityTypeMapping TypeName="GAS_model.Cards">
+        <MappingFragment StoreEntitySet="Cards">
+          <ScalarProperty Name="CardID" ColumnName="CardID" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="bonus" ColumnName="bonus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Clients">
+      <EntityTypeMapping TypeName="GAS_model.Clients">
+        <MappingFragment StoreEntitySet="Clients">
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="idofcard" ColumnName="idofcard" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="deal_to_card">
+      <EntityTypeMapping TypeName="GAS_model.deal_to_card">
+        <MappingFragment StoreEntitySet="deal_to_card">
+          <ScalarProperty Name="DealtocardID" ColumnName="DealtocardID" />
+          <ScalarProperty Name="idofcard" ColumnName="idofcard" />
+          <ScalarProperty Name="idofdeal" ColumnName="idofdeal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Deals">
+      <EntityTypeMapping TypeName="GAS_model.Deals">
+        <MappingFragment StoreEntitySet="Deals">
+          <ScalarProperty Name="dealID" ColumnName="dealID" />
+          <ScalarProperty Name="idofstation" ColumnName="idofstation" />
+          <ScalarProperty Name="idofproduct" ColumnName="idofproduct" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="totalprice" ColumnName="totalprice" />
+          <ScalarProperty Name="data" ColumnName="data" />
+          <ScalarProperty Name="bonus" ColumnName="bonus" />
+          <ScalarProperty Name="time" ColumnName="time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="GAS_model.Products">
+        <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="productID" ColumnName="productID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="price" ColumnName="price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Stations">
+      <EntityTypeMapping TypeName="GAS_model.Stations">
+        <MappingFragment StoreEntitySet="Stations">
+          <ScalarProperty Name="StationID" ColumnName="StationID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="location" ColumnName="location" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

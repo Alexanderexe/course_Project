@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="E275E7AD-0FDE-4A4B-9043-EA8079AAC7F3" Name="Kursach" Codepage="1251" Language="1049" Version="1.0.0.0" Manufacturer="MOVS" UpgradeCode="d0bba18e-833c-41d8-9d45-8d6468216883">
+    <Package InstallerVersion="200" Compressed="yes" SummaryCodepage="1251" Description="Описание хз чего" Manufacturer="MOVS" InstallScope="perMachine" />
+
+    <Media Id="1" Cabinet="demoApp.cab" EmbedCab="yes"></Media>
+
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ManufacturerFolder" Name="MOVS">
+          <Directory Id="INSTALLFOLDER" Name="Kursach" />
+        </Directory>
+      </Directory>
+
+
+
+      <Directory Id="CommonAppDataFolder">
+        <Directory Id="INSTALLDATAFOLDER" Name="MOVS">
+          <Component Id="compo2" Guid="19F3C665-57F2-4E4D-85CB-6AC6538C3A39">
+            <CreateFolder Directory="INSTALLDATAFOLDER">
+              <Permission User="Everyone" GenericAll="yes" />
+            </CreateFolder>
+          </Component>
+        </Directory>
+
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="Kursach" />
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Kursach" />
+    </Directory>
+
+    <DirectoryRef Id="INSTALLDATAFOLDER">
+      <Component Id="KursDatabase.mdf">
+        <File Source="$(var.Finaly.TargetDir)\Database.mdf" />
+      </Component>
+      <Component Id="KursDatabase_log.mdf">
+        <File Source="$(var.Finaly.TargetDir)\Database_log.ldf" />
+      </Component>
+    </DirectoryRef>
+
+
+
+
+    <!-- Элементы в каталоге с программой -->
+    <DirectoryRef Id="INSTALLFOLDER">
+      <!-- Основной запускаемый файл -->
+      <Component Id="MainExecutable" Guid="8e08a610-c12a-4221-883c-70464a370ab4">
+        <File Id="KursAppExe" Name="$(var.KursApp.TargetFileName)" Source="$(var.KursApp.TargetPath)" DiskId="1" KeyPath="yes" >
+          <!-- Ярлыки для запуска программы -->
+          <Shortcut Id="DesktopShortcut" Name="Курсовая работа" Description="Описание для курсовой ярлка работы" WorkingDirectory="INSTALLFOLDER" Directory="DesktopFolder" Advertise="yes" Icon="ProgramIcon.exe"></Shortcut>
+
+          <Shortcut Id="ProgramsMenuShortcut" Name="Курсовая работа" Description="Описание для курсовой ярлка работы" WorkingDirectory="INSTALLFOLDER" Directory="ProgramMenuDir" Advertise="yes" Icon="ProgramIcon.exe"></Shortcut>
+        </File>
+      </Component>
+
+
+      <!-- Конфигурационный файл приложения -->
+      <Component Id="MainExecutableConfig" Guid="1c9533f6-a713-44f0-b23b-d3d550dbf0f7">
+        <File Id="KursAppExeConfig" Name="KursApp.exe.config" Source="$(var.KursApp.TargetDir)" DiskId="1" KeyPath="yes" />
+      </Component>
+      <!-- Отладочные символы -->
+      <Component Id="MainExecutablePdb" Guid="2b02a952-4cb4-4f19-a368-7476c4dc2412">
+        <File Id="KursAppPdb" Name="KursApp.pdb" Source="$(var.KursApp.TargetDir)" DiskId="1" KeyPath="yes" />
+      </Component>
+
+      <Component Id="EntityFramework.dll">
+        <File Source="$(var.KursApp.TargetDir)\EntityFramework.dll" />
+      </Component>
+      <Component Id="EntityFramework.SqlServer.dll">
+        <File Source="$(var.KursApp.TargetDir)\EntityFramework.SqlServer.dll" />
+      </Component>
+      <Component Id="EntityFramework.SqlServer.xml">
+        <File Source="$(var.KursApp.TargetDir)\EntityFramework.SqlServer.xml" />
+      </Component>
+      <Component Id="EntityFramework.xml">
+        <File Source="$(var.KursApp.TargetDir)\EntityFramework.xml" />
+      </Component>
+      <Component Id="FirstFloor.ModernUI.dll">
+        <File Source="$(var.KursApp.TargetDir)\FirstFloor.ModernUI.dll" />
+      </Component>
+      <Component Id="FirstFloor.ModernUI.xml">
+        <File Source="$(var.KursApp.TargetDir)\FirstFloor.ModernUI.xml" />
+      </Component>
+
+      <Component Id="KursApp.vshost.exe.config">
+        <File Source="$(var.KursApp.TargetDir)\KursApp.vshost.exe.config" />
+      </Component>
+      <Component Id="KursApp.vshost.exe.manifest">
+        <File Source="$(var.KursApp.TargetDir)\KursApp.vshost.exe.manifest" />
+      </Component>
+      <Component Id="KursApp.vshost.exe">
+        <File Source="$(var.KursApp.TargetDir)\KursApp.vshost.exe" />
+      </Component>
+    </DirectoryRef>
+
+
+
+    <DirectoryRef Id="ProgramMenuDir">
+      <!-- Компонент, добавляющий ярлык "Удалить программу", а также содержащий функции для удаления каталога при деинсталляции -->
+      <Component Id="ProgramMenuDir" Guid="eb6f3331-b68e-401a-8625-2ea138eea114">
+        <Shortcut Id="UninstallProduct" Name="Remove Demo Application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Description="remove Demo Application from pc" />
+        <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+      </Component>
+    </DirectoryRef>
+
+    <!-- Пиктограмма для ярлыков -->
+    <Icon Id="ProgramIcon.exe" SourceFile="$(var.KursApp.TargetPath)" />
+
+
+
+    <Feature Id="Complete2" Title="Demo Application2" Description="Full install" Display="expand" Level="1" ConfigurableDirectory="INSTALLDATAFOLDER" AllowAdvertise="no" Absent="disallow" InstallDefault="local">
+      <Feature Id="RequiredComponents2" Title="Componets" Description="Neeed" Level="1" AllowAdvertise="no" Absent="disallow" InstallDefault="local">
+        <ComponentRef Id="compo2"/>
+        <ComponentRef Id="KursDatabase.mdf"/>
+        <ComponentRef Id="KursDatabase_log.mdf"/>
+      </Feature>
+    </Feature>
+
+
+
+    <!-- Именованные наборы компонентов (Features - Опции) -->
+    <Feature Id="Complete" Title="Demo Application" Description="Full install" Display="expand" Level="1" ConfigurableDirectory="INSTALLFOLDER" AllowAdvertise="no" Absent="disallow" InstallDefault="local">
+      <Feature Id="RequiredComponents" Title="Componets" Description="Neeed" Level="1" AllowAdvertise="no" Absent="disallow" InstallDefault="local">
+        <ComponentRef Id="MainExecutable" />
+        <ComponentRef Id="MainExecutableConfig" />
+        <ComponentRef Id="ProgramMenuDir"/>
+
+        <ComponentRef Id="EntityFramework.dll"/>
+        <ComponentRef Id="EntityFramework.xml"/>
+        <ComponentRef Id="EntityFramework.SqlServer.dll"/>
+        <ComponentRef Id="EntityFramework.SqlServer.xml"/>
+        <ComponentRef Id="FirstFloor.ModernUI.dll"/>
+        <ComponentRef Id="FirstFloor.ModernUI.xml"/>
+
+
+        <ComponentRef Id="KursApp.vshost.exe.config"/>
+        <ComponentRef Id="KursApp.vshost.exe.manifest"/>
+        <ComponentRef Id="KursApp.vshost.exe"/>
+
+
+      </Feature>
+      <Feature Id="ExecutableSymbols" Title="Sumbols" Description="Addded libs." Level="2" AllowAdvertise="no" Absent="allow" InstallDefault="local">
+        <ComponentRef Id="MainExecutablePdb"/>
+      </Feature>
+    </Feature>
+
+    <!-- Интерфейс пользователя -->
+    <UI Id="MyWixUI_Mondo">
+      <UIRef Id="WixUI_Mondo" />
+      <UIRef Id="WixUI_ErrorProgressText" />
+    </UI>
+
+  </Product>
+</Wix>

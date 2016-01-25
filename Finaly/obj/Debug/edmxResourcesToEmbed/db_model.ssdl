@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GAS_model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Cards">
+    <Key>
+      <PropertyRef Name="CardID" />
+    </Key>
+    <Property Name="CardID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="status" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="bonus" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="ClientID" />
+    </Key>
+    <Property Name="ClientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="idofcard" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="deal_to_card">
+    <Key>
+      <PropertyRef Name="DealtocardID" />
+    </Key>
+    <Property Name="DealtocardID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idofcard" Type="int" Nullable="false" />
+    <Property Name="idofdeal" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Deals">
+    <Key>
+      <PropertyRef Name="dealID" />
+    </Key>
+    <Property Name="dealID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idofstation" Type="int" />
+    <Property Name="idofproduct" Type="int" />
+    <Property Name="quantity" Type="int" />
+    <Property Name="totalprice" Type="int" />
+    <Property Name="data" Type="date" />
+    <Property Name="bonus" Type="int" />
+    <Property Name="time" Type="time" Precision="7" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="productID" />
+    </Key>
+    <Property Name="productID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="price" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Stations">
+    <Key>
+      <PropertyRef Name="StationID" />
+    </Key>
+    <Property Name="StationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="location" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Clients_Cards">
+    <End Role="Cards" Type="Self.Cards" Multiplicity="1" />
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cards">
+        <PropertyRef Name="CardID" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="idofcard" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_deal_to_card_Cards">
+    <End Role="Cards" Type="Self.Cards" Multiplicity="1" />
+    <End Role="deal_to_card" Type="Self.deal_to_card" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cards">
+        <PropertyRef Name="CardID" />
+      </Principal>
+      <Dependent Role="deal_to_card">
+        <PropertyRef Name="idofcard" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_deal_to_card_Deals">
+    <End Role="Deals" Type="Self.Deals" Multiplicity="1" />
+    <End Role="deal_to_card" Type="Self.deal_to_card" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Deals">
+        <PropertyRef Name="dealID" />
+      </Principal>
+      <Dependent Role="deal_to_card">
+        <PropertyRef Name="idofdeal" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Deals_Products">
+    <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+    <End Role="Deals" Type="Self.Deals" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="productID" />
+      </Principal>
+      <Dependent Role="Deals">
+        <PropertyRef Name="idofproduct" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Deals_Stations">
+    <End Role="Stations" Type="Self.Stations" Multiplicity="0..1" />
+    <End Role="Deals" Type="Self.Deals" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Stations">
+        <PropertyRef Name="StationID" />
+      </Principal>
+      <Dependent Role="Deals">
+        <PropertyRef Name="idofstation" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="GAS_modelStoreContainer">
+    <EntitySet Name="Cards" EntityType="Self.Cards" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="deal_to_card" EntityType="Self.deal_to_card" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Deals" EntityType="Self.Deals" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Stations" EntityType="Self.Stations" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Clients_Cards" Association="Self.FK_Clients_Cards">
+      <End Role="Cards" EntitySet="Cards" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="FK_deal_to_card_Cards" Association="Self.FK_deal_to_card_Cards">
+      <End Role="Cards" EntitySet="Cards" />
+      <End Role="deal_to_card" EntitySet="deal_to_card" />
+    </AssociationSet>
+    <AssociationSet Name="FK_deal_to_card_Deals" Association="Self.FK_deal_to_card_Deals">
+      <End Role="Deals" EntitySet="Deals" />
+      <End Role="deal_to_card" EntitySet="deal_to_card" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Deals_Products" Association="Self.FK_Deals_Products">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Deals" EntitySet="Deals" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Deals_Stations" Association="Self.FK_Deals_Stations">
+      <End Role="Stations" EntitySet="Stations" />
+      <End Role="Deals" EntitySet="Deals" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
